@@ -3,7 +3,7 @@ from django.db import models
 
 
 class Profile(models.Model):
-    avatar = models.ImageField('Аватар профиля', upload_to='avatars')
+    avatar = models.ImageField('Аватар профиля', upload_to='avatars', blank=True)
 
     class Meta:
         verbose_name = 'Профиль'
