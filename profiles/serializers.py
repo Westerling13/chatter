@@ -24,3 +24,8 @@ class UserSerializer(serializers.ModelSerializer):
         instance.save()
 
         return instance
+
+
+class UserLogInSerializer(serializers.Serializer):
+    username = serializers.CharField()
+    password = serializers.CharField()
