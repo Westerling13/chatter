@@ -1,3 +1,12 @@
-from django.shortcuts import render
+from rest_framework import generics
 
-# Create your views here.
+from chat.models import Chat
+from chat.serializers import ChatSerializer
+
+
+class ChatListCreateView(generics.ListCreateAPIView):
+    serializer_class = ChatSerializer
+    queryset = Chat.objects
+
+    def perform_create(self, serializer):
+        serializer.save(initiator=self.request.user)
