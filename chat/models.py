@@ -26,9 +26,15 @@ class Chat(AutoDateMixin):
 
 class Message(AutoDateMixin):
     sender = models.ForeignKey(
-        User, verbose_name='Отправитель', related_name='messages', on_delete=models.SET_NULL, null=True, blank=True,
+        User,
+        verbose_name='Отправитель',
+        related_name='sent_messages',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
     )
     text = models.TextField('Текст сообщения')
+    chat = models.ForeignKey('Chat', verbose_name='Чат', on_delete=models.CASCADE, related_name='messages')
 
     class Meta:
         verbose_name = 'Сообщение'
