@@ -10,3 +10,11 @@ class ChatListCreateView(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(initiator=self.request.user)
+
+
+class ChatDetailView(generics.RetrieveAPIView):
+    serializer_class = ChatSerializer
+    lookup_url_kwarg = 'chat_id'
+
+    def get_queryset(self):
+        return Chat.objects.filter(chatmember__user=self.request.user)
