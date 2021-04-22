@@ -35,6 +35,7 @@ class Message(AutoDateMixin):
     )
     text = models.TextField('Текст сообщения')
     chat = models.ForeignKey('Chat', verbose_name='Чат', on_delete=models.CASCADE, related_name='messages')
+    read_marks = models.ManyToManyField(User, verbose_name='Отметки о прочтении', related_name='read_marks')
 
     class Meta:
         verbose_name = 'Сообщение'
