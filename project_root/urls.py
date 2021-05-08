@@ -20,9 +20,9 @@ from profiles.views import UserCheckAPIView, UserLogOutAPIView, UserLogInAPIView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/users/register/', UserRegisterAPIView.as_view(), name='user_create'),
-    path('api/users/me/', UserCheckAPIView.as_view(), name='me'),
-    path('api/users/logout/', UserLogOutAPIView.as_view(), name='logout'),
-    path('api/users/login/', UserLogInAPIView.as_view(), name='login'),
-    path('api/chats/', include('chat.urls')),
+    path('api/v1/users/', UserRegisterAPIView.as_view(), name='user_create'),
+    path('api/v1/users/me/', UserCheckAPIView.as_view(), name='me'),
+    path('api/v1/login/', UserLogInAPIView.as_view(), name='login'),
+    path('api/v1/logout/', UserLogOutAPIView.as_view(), name='logout'),
+    path('api/v1/chats/', include('chat.urls')),
 ]
