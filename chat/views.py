@@ -1,19 +1,22 @@
 from rest_framework import generics
+from rest_framework.filters import SearchFilter
 
 from chat.models import Chat, Message
-from chat.serializers import ChatSerializer, MessageSerializer
+from chat.serializers import ChatSerializer, MessageSerializer, ChatDetailSerializer
 
 
 class ChatListCreateView(generics.ListCreateAPIView):
     serializer_class = ChatSerializer
     queryset = Chat.objects
+    filter_backends = [SearchFilter]
+    search_fields = ['initiator__username']
 
     def perform_create(self, serializer):
         serializer.save(initiator=self.request.user)
 
 
 class ChatDetailView(generics.RetrieveAPIView):
-    serializer_class = ChatSerializer
+    serializer_class = ChatDetailSerializer
     lookup_url_kwarg = 'chat_id'
 
     def get_queryset(self):
