@@ -1,7 +1,7 @@
 from django.contrib.auth import login, authenticate, logout
 from rest_framework.exceptions import ValidationError, PermissionDenied
 from rest_framework.generics import CreateAPIView, GenericAPIView
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -38,9 +38,9 @@ class UserLogOutAPIView(APIView):
 
 
 class UserLogInAPIView(GenericAPIView):
-    permission_classes = [AllowAny]
+    permission_classes = [~IsAuthenticated]
     serializer_class = UserLogInSerializer
-    queryset = User.objects
+    queryset = User.objects.all()
 
     def put(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
