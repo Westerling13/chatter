@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'channels',
 
     'profiles',
     'chat',
@@ -77,6 +78,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'project_root.wsgi.application'
+ASGI_APPLICATION = 'project_root.asgi.application'
 
 
 REST_FRAMEWORK = {
