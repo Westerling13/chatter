@@ -23,6 +23,9 @@ class Chat(AutoDateMixin):
     def __str__(self):
         return f'Чат#{self.id}'
 
+    def add_member(self, user):
+        return ChatMember.objects.create(user=user, chat=self)
+
 
 class Message(AutoDateMixin):
     sender = models.ForeignKey(
