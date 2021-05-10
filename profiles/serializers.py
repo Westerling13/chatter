@@ -4,7 +4,7 @@ from rest_framework.exceptions import ValidationError
 from profiles.user import User
 
 
-class UserSerializer(serializers.ModelSerializer):
+class UserCreateSerializer(serializers.ModelSerializer):
     password1 = serializers.CharField(write_only=True)
     password2 = serializers.CharField(write_only=True)
 
@@ -24,8 +24,3 @@ class UserSerializer(serializers.ModelSerializer):
         instance.save()
 
         return instance
-
-
-class UserLogInSerializer(serializers.Serializer):
-    username = serializers.CharField()
-    password = serializers.CharField()
