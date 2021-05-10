@@ -1,7 +1,6 @@
 from rest_framework import serializers
 
 from chat.models import Message, Chat, ChatMember
-from profiles.user import User
 
 
 class MessageSerializer(serializers.ModelSerializer):
@@ -11,11 +10,12 @@ class MessageSerializer(serializers.ModelSerializer):
 
 
 class ChatMemberSerializer(serializers.ModelSerializer):
-    avatar = serializers.ImageField(source='profile.avatar')
+    avatar = serializers.ImageField(source='user.profile.avatar')
+    username = serializers.CharField(source='user.username')
 
     class Meta:
-        model = User
-        fields = ('username', 'id', 'avatar')
+        model = ChatMember
+        fields = ('username', 'user_id', 'avatar', 'write_access')
 
 
 class ChatSerializer(serializers.ModelSerializer):
@@ -25,13 +25,12 @@ class ChatSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         instance = super().create(validated_data)
-        ChatMember.objects.create(user=self.context['request'].user, chat=instance)
-
+        instance.add_member(user=self.context['request'].user)
         return instance
 
 
 class ChatDetailSerializer(serializers.ModelSerializer):
-    members = ChatMemberSerializer(many=True)
+    members = ChatMemberSerializer(source='chatmember_set', many=True)
 
     class Meta:
         model = Chat
