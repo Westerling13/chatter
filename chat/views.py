@@ -1,3 +1,5 @@
+import channels.layers
+from asgiref.sync import async_to_sync
 from rest_framework import generics, status
 from rest_framework.exceptions import ValidationError
 from rest_framework.filters import SearchFilter
@@ -47,4 +49,9 @@ class MessageListCreateView(generics.ListCreateAPIView):
         return Message.objects.filter(chat_id=self.kwargs['chat_id'])
 
     def perform_create(self, serializer):
-        serializer.save(sender=self.request.user, chat_id=self.kwargs['chat_id'])
+        message = serializer.save(sender=self.request.user, chat_id=self.kwargs['chat_id'])
+        chat_name = f'chat_{self.kwargs["chat_id"]}'
+        channel_layer = channels.layers.get_channel_layer()
+        async_to_sync(channel_layer.group_send)(
+            chat_name, {'type': 'chat_message', 'message': message.text},
+        )
