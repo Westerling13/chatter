@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'channels',
 
     'profiles',
     'chat',
@@ -77,6 +78,15 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'project_root.wsgi.application'
+ASGI_APPLICATION = 'project_root.asgi.application'
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [(env.str('CHANNELS_HOST_IP'), env.int('CHANNELS_HOST_PORT'))],
+        },
+    },
+}
 
 
 REST_FRAMEWORK = {
