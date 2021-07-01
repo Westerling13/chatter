@@ -3,6 +3,7 @@ from django.urls import path, include
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from profiles.views import UserCheckAPIView, UserLogOutAPIView, UserLogInAPIView, UserRegisterAPIView
+from project_root.swagger import schema_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -13,4 +14,5 @@ urlpatterns = [
     path('api/v1/login/', UserLogInAPIView.as_view(), name='login'),
     path('api/v1/logout/', UserLogOutAPIView.as_view(), name='logout'),
     path('api/v1/chats/', include('chat.urls')),
+    path('api/v1/swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
 ]
