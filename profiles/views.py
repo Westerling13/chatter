@@ -1,12 +1,9 @@
-from django.contrib.auth import login, logout
-from rest_framework.authentication import BasicAuthentication
+from django.contrib.auth import login
 from rest_framework.exceptions import PermissionDenied
-from rest_framework.generics import CreateAPIView, GenericAPIView
+from rest_framework.generics import CreateAPIView, RetrieveAPIView
 from rest_framework.permissions import AllowAny
-from rest_framework.response import Response
-from rest_framework.views import APIView
 
-from profiles.serializers import UserCreateSerializer
+from profiles.serializers import UserCreateSerializer, ProfileSerializer
 from profiles.user import User
 
 
@@ -16,6 +13,7 @@ class UserRegisterAPIView(CreateAPIView):
     queryset = User.objects
 
     def post(self, request, *args, **kwargs):
+        """Регистрация пользователя."""
         if request.user.is_authenticated:
             raise PermissionDenied
         return self.create(request, *args, **kwargs)
@@ -25,8 +23,12 @@ class UserRegisterAPIView(CreateAPIView):
         login(self.request, user)
 
 
-class UserCheckAPIView(GenericAPIView):
-    serializer_class = UserCreateSerializer
+class ProfileDetailApiView(RetrieveAPIView):
+    serializer_class = ProfileSerializer
+
+    def get_object(self):
+        return self.request.user.profile
 
     def get(self, request, *args, **kwargs):
-        return Response(self.get_serializer(request.user).data)
+        """Информация о профиле."""
+        return self.retrieve(request, *args, **kwargs)
