@@ -30,17 +30,3 @@ class UserCheckAPIView(GenericAPIView):
 
     def get(self, request, *args, **kwargs):
         return Response(self.get_serializer(request.user).data)
-
-
-class UserLogOutAPIView(APIView):
-    def get(self, request, *args, **kwargs):
-        logout(request)
-        return Response()
-
-
-class UserLogInAPIView(APIView):
-    authentication_classes = [BasicAuthentication]
-
-    def get(self, request, *args, **kwargs):
-        login(request, request.user)
-        return Response()
