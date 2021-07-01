@@ -11,12 +11,20 @@ from chat.serializers import ChatSerializer, MessageSerializer, ChatDetailSerial
 
 class ChatListCreateView(generics.ListCreateAPIView):
     serializer_class = ChatSerializer
-    queryset = Chat.objects
+    queryset = Chat.objects.all()
     filter_backends = [SearchFilter]
     search_fields = ['initiator__username']
 
     def perform_create(self, serializer):
         serializer.save(initiator=self.request.user)
+
+    def get(self, request, *args, **kwargs):
+        """Список всех чатов."""
+        return self.list(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        """Создание чата."""
+        return self.create(request, *args, **kwargs)
 
 
 class ChatDetailView(generics.RetrieveAPIView):
@@ -26,6 +34,10 @@ class ChatDetailView(generics.RetrieveAPIView):
     def get_queryset(self):
         return Chat.objects.filter(chatmember__user=self.request.user)
 
+    def get(self, request, *args, **kwargs):
+        """Информация о чате."""
+        return self.retrieve(request, *args, **kwargs)
+
 
 class ChatMemberListCreateView(generics.GenericAPIView):
     serializer_class = ChatSerializer
@@ -33,6 +45,7 @@ class ChatMemberListCreateView(generics.GenericAPIView):
     queryset = Chat.objects.all()
 
     def post(self, request, *args, **kwargs):
+        """Присоединение к чату нового участника."""
         chat = self.get_object()
         if chat.members.filter(id=request.user.id).exists():
             raise ValidationError('Вы уже присоединились к этому чату.')
@@ -55,3 +68,11 @@ class MessageListCreateView(generics.ListCreateAPIView):
         async_to_sync(channel_layer.group_send)(
             chat_name, {'type': 'chat_message', 'message': message.text},
         )
+
+    def get(self, request, *args, **kwargs):
+        """Список всех сообщений в чате."""
+        return self.list(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        """Отправка нового сообщения в чат."""
+        return self.create(request, *args, **kwargs)
