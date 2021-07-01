@@ -22,14 +22,11 @@ class ChatMemberSerializer(serializers.ModelSerializer):
 
 
 class ChatSerializer(serializers.ModelSerializer):
-    initiator_name = serializers.CharField(source='initiator.username')
+    initiator_name = serializers.CharField(source='initiator.username', read_only=True)
 
     class Meta:
         model = Chat
         fields = ('initiator_name', 'id')
-        extra_kwargs = {
-            'initiator_name': {'read_only': True},
-        }
 
     def create(self, validated_data):
         instance = super().create(validated_data)
