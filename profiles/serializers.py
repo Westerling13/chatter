@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
+from profiles.models import Profile
 from profiles.user import User
 
 
@@ -24,3 +25,11 @@ class UserCreateSerializer(serializers.ModelSerializer):
         instance.save()
 
         return instance
+
+
+class ProfileSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(source='user.username')
+
+    class Meta:
+        model = Profile
+        fields = ('avatar', 'username')

@@ -7,6 +7,9 @@ class MessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Message
         fields = ('sender', 'text', 'dt_created')
+        extra_kwargs = {
+            'sender': {'read_only': True},
+        }
 
 
 class ChatMemberSerializer(serializers.ModelSerializer):
@@ -19,9 +22,11 @@ class ChatMemberSerializer(serializers.ModelSerializer):
 
 
 class ChatSerializer(serializers.ModelSerializer):
+    initiator_name = serializers.CharField(source='initiator.username', read_only=True)
+
     class Meta:
         model = Chat
-        fields = ('initiator', 'id')
+        fields = ('initiator_name', 'id')
 
     def create(self, validated_data):
         instance = super().create(validated_data)

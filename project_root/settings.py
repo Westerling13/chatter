@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'channels',
+    'drf_yasg',
+    'rest_framework_simplejwt',
 
     'profiles',
     'chat',
