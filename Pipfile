@@ -1,0 +1,22 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+channels = "==3.0.3"
+channels-redis = "==3.2.0"
+djangorestframework = "==3.12.4"
+djangorestframework-simplejwt = "==4.7.1"
+drf-yasg = "==1.20.0"
+pillow = "==8.1.2"
+pytest = "==6.2.4"
+pytest-django = "==4.3.0"
+requests = "==2.25.1"
+Django = "==3.1.7"
+
+[dev-packages]
+ipython = "==7.23.1"
+
+[requires]
+python_version = "3.8"
