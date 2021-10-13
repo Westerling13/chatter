@@ -1,3 +1,8 @@
 from django.contrib import admin
 
-# Register your models here.
+from chat.models import Message
+
+
+@admin.register(Message)
+class MessageAdmin(admin.ModelAdmin):
+    raw_id_fields = ('sender', 'chat')
