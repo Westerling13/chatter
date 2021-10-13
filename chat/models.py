@@ -46,3 +46,14 @@ class Message(AutoDateMixin):
 
     def __str__(self):
         return f'Сообщение#{self.id}'
+
+
+class Attachment(AutoDateMixin):
+    message = models.ForeignKey(Message, verbose_name='Сообщение', on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = 'Вложение'
+        verbose_name_plural = 'Вложения'
+
+    def __str__(self):
+        return f'Attachment#{self.id}'
