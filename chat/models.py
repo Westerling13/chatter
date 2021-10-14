@@ -1,3 +1,5 @@
+import os
+
 from django.db import models
 
 from common_utils.mixins import AutoDateMixin
@@ -48,8 +50,20 @@ class Message(AutoDateMixin):
         return f'Сообщение#{self.id}'
 
 
+def path_to_attachment(instance, filename):
+    return os.path.join('chats', str(instance.message.chat_id), filename)
+
+
+def path_to_attachment_preview(instance, filename):
+    return os.path.join('chats', 'previews', str(instance.message.chat_id), filename)
+
+
 class Attachment(AutoDateMixin):
     message = models.ForeignKey(Message, verbose_name='Сообщение', on_delete=models.CASCADE)
+    file = models.FileField('Файл', upload_to=path_to_attachment)
+    preview = models.ImageField('Превью для изображений', upload_to=path_to_attachment_preview, null=True, blank=True)
+    is_image = models.BooleanField('Изображение', default=False)
+    original_name = models.CharField('Оригинальное имя файла', max_length=50)
 
     class Meta:
         verbose_name = 'Вложение'
