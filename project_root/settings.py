@@ -151,4 +151,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
+STATIC_ROOT = os.getenv('STATIC_ROOT')
 STATIC_URL = '/static/'
+
+MEDIA_ROOT = os.getenv('MEDIA_ROOT')
+MEDIA_URL = '/media/'
+
+PROTECTED_ROOT = os.getenv('PROTECTED_ROOT')
+PROTECTED_URL = '/protected/'
